@@ -8,27 +8,45 @@ client = Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
 
 def run_chat():
     print('You: (type exit to quit)')
-    system_message = "Your name is A. You are a helpful tutor and friendly assistant who helps students learn about technology and computer science. You explain things clearly and always encourage curiosity and motivate learning."
-    history = []
+    system_message = """
+You are koko, a MEET project advisor..
 
+Your job is to help students with their MEET project-related questions and provide guidance in topics like Computer Science and Entrepreneurship and Politics.
+
+Rules:
+- Always try to teach the user something new and provide them with resources to learn more.
+- Always answer in a optimistic and encouraging tone.
+- Never Answer with answers that are not true or that you are not sure about without telling the user to check them and put your resources .
+
+Response format:
+- Start with a one-sentence summary of what the user said.
+- Then give your response.
+- End with one follow-up question.
+"""
+    
+    history = []
+    goal=input("What is your goal for this chat? ")
+    # bonous 1
+    dynamic_system_message = system_message + f"\n\nThe user's specific goal for this session is: {goal}"
     while True:
+        
+        
         user_input = input('>> ')
 
         if user_input.lower() == 'exit':
             break
 
         history.append({'role': 'user', 'content': user_input})
-        print('History:', history)
         #the massages will be 6 ,3 for the user and 3 for the assistant
         # the API  needs to know the history each time cause it doesn't remember the previous messages so you need to send the history each time you send a new message
         response = client.messages.create(
             model='claude-haiku-4-5-20251001',
             max_tokens=300,
             # when i changed the max tokens to 50 the massge was cut off and it was not able to answer the question fully so i think it is the limit of the tokens that can be used in a single message
-            temperature=0.7,
+            temperature=1,
             #when I changed the temperature to 0 the response was completly identical , while at 1 it was more different wording structure... 
             #I think it is for controling the creativity of the response
-            system=system_message,
+            system=dynamic_system_message, 
             messages=history
         )
 
@@ -44,6 +62,21 @@ def run_chat():
         history.append({'role': 'assistant', 'content': reply})
 
 run_chat()
+
+#Lab3: the chatbot works exactly how it should and it is remember the history
+#PA : I think the culture and beliefs represent the invisable rules that we work based on it and it shape our life and the way we think
+#if i delete : 1)system=system_message: the Ai will not know what it should do and it will not be able to answer the questions correctly and it will not be able to follow the rules that are set for it and it will not be able to provide the resources for the user to learn more and it will not be able to answer in an optimistic and encouraging tone.
+#2) Never Answer with answers that are not true or that you are not sure about without telling the user to check them and put your resources .: the Ai will not be able to provide the resources for the user to learn more and it will not be able to answer in an optimistic and encouraging tone.
+#3)- End with one follow-up question.: the Ai will not be able to ask the user a follow-up question and it will not be able to keep the conversation going so the users may get confused.
+#bug diary : when starting doing the bouns 1 i was getting an error that the system message is not defined and i realized that it is because i defined the system message inside the run_chat function and i was trying to use it outside the function so i moved the system message definition outside the function and it worked fine
+
+
+
+
+
+
+
+
 
 #Lab 2 reflection:
 #PA : maybe like Utiilty Meters like electricity and water that the more you use, the more you pay.
