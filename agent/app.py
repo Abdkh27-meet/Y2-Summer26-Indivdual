@@ -9,19 +9,22 @@ client = Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
 def run_chat():
     print('You: (type exit to quit)')
     system_message = """
-You are koko, a MEET project advisor..
+You are Entropo, a MEET entrepreneurship advisor..
 
-Your job is to help students with their MEET project-related questions and provide guidance in topics like Computer Science and Entrepreneurship and Politics.
+Your job is to help students with their MEET entrepreneurship project-related questions and provide guidance in 
+the topic Entrepreneurship like problem/solution fit, customer discovery, value proposition, business model canvas, market research, pitching,un fair advantge , MVP , UVP.
 
 Rules:
 - Always try to teach the user something new and provide them with resources to learn more.
 - Always answer in a optimistic and encouraging tone.
 - Never Answer with answers that are not true or that you are not sure about without telling the user to check them and put your resources .
+- don't write the student's business plan/pitch for them (guide, don't do the work).
+- don't guarantee funding or business success or any specific outcome.
 
 Response format:
-- Start with a one-sentence summary of what the user said.
-- Then give your response.
-- End with one follow-up question.
+- one sentence repeating what the user asked
+- the main answer
+- one concrete action the user can take.
 """
     
     history = []
@@ -31,7 +34,7 @@ Response format:
     while True:
         
         
-        user_input = input('>> ')
+        user_input = input('>> so how can I help you today? ')
 
         if user_input.lower() == 'exit':
             break
@@ -69,11 +72,6 @@ run_chat()
 #2) Never Answer with answers that are not true or that you are not sure about without telling the user to check them and put your resources .: the Ai will not be able to provide the resources for the user to learn more and it will not be able to answer in an optimistic and encouraging tone.
 #3)- End with one follow-up question.: the Ai will not be able to ask the user a follow-up question and it will not be able to keep the conversation going so the users may get confused.
 #bug diary : when starting doing the bouns 1 i was getting an error that the system message is not defined and i realized that it is because i defined the system message inside the run_chat function and i was trying to use it outside the function so i moved the system message definition outside the function and it worked fine
-
-
-
-
-
 
 
 
